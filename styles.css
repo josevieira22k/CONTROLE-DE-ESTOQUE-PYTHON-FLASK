@@ -1,0 +1,94 @@
+/* Define a fonte e o fundo geral da página */
+body {
+    font-family: Arial, sans-serif; /* Define a fonte geral da página */
+    background-color: #f4f4f4; /* Cor de fundo neutra */
+    color: #333; /* Cor do texto padrão */
+}
+
+/* Estilização do cabeçalho da página */
+header {
+    background-color: #007bff; /* Cor de fundo do cabeçalho */
+    color: #fff; /* Cor do texto do cabeçalho */
+    padding: 10px; /* Espaçamento interno */
+    text-align: center; /* Centraliza o texto */
+}
+
+/* Contêiner central que envolve o conteúdo principal */
+.container {
+    width: 80%; /* Largura do contêiner, ajustável */
+    margin: 20px auto; /* Centraliza o contêiner */
+    background: #fff; /* Cor de fundo do contêiner */
+    padding: 20px; /* Espaçamento interno */
+    border-radius: 5px; /* Bordas arredondadas */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra sutil para destaque */
+}
+
+/* Estilização do título principal */
+h1 {
+    margin: 0 0 20px 0; /* Define margem inferior */
+}
+
+/* Estilos para os campos de entrada de texto, senha e número */
+input[type="text"],
+input[type="password"],
+input[type="number"],
+button {
+    width: 100%; /* Ocupa toda a largura do contêiner */
+    padding: 10px; /* Espaçamento interno */
+    margin: 10px 0; /* Espaçamento vertical entre elementos */
+}
+
+/* Estilos básicos para o botão */
+button {
+    background-color: #28a745; /* Cor de fundo do botão */
+    color: white; /* Cor do texto do botão */
+    border: none; /* Remove bordas padrão */
+    cursor: pointer; /* Mostra o cursor como um ponteiro */
+}
+
+/* Alteração de cor do botão ao passar o cursor */
+button:hover {
+    background-color: #218838; /* Cor do botão em hover */
+}
+
+/* Estilos para tabelas */
+table {
+    width: 100%; /* Ocupa toda a largura do contêiner */
+    border-collapse: collapse; /* Remove espaçamento entre bordas */
+}
+
+/* Define a borda para toda a tabela, cabeçalhos e células */
+table, th, td {
+    border: 1px solid #ddd; /* Cor da borda das células */
+}
+
+/* Define o preenchimento e o alinhamento do texto das células */
+th, td {
+    padding: 10px; /* Espaçamento interno das células */
+    text-align: left; /* Alinhamento à esquerda */
+}
+
+/* Estilização dos cabeçalhos da tabela */
+th {
+    background-color: #007bff; /* Cor de fundo dos cabeçalhos */
+    color: white; /* Cor do texto dos cabeçalhos */
+}
+
+/* Estilos de mensagem de feedback (flash messages) */
+.flash {
+    padding: 10px; /* Espaçamento interno */
+    margin: 10px 0; /* Espaçamento vertical */
+    border-radius: 5px; /* Bordas arredondadas */
+}
+
+/* Estilos para mensagens de erro */
+.flash.error {
+    background-color: #dc3545; /* Cor de fundo para erro */
+    color: white; /* Cor do texto */
+}
+
+/* Estilos para mensagens de sucesso */
+.flash.success {
+    background-color: #28a745; /* Cor de fundo para sucesso */
+    color: white; /* Cor do texto */
+}

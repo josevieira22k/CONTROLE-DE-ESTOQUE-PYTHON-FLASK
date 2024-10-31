@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8"> <!-- Define a codificação de caracteres como UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Ajusta o layout para dispositivos móveis -->
+    <title>Cadastrar Produto</title> <!-- Título da página -->
+
+    <!-- Inclui o arquivo CSS personalizado -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <!-- Inclui o CSS do Bootstrap para estilização adicional -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Inclui o Font Awesome para ícones -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <!-- Estilos adicionais personalizados para a página -->
+    <style>
+        /* Estilização do corpo da página */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            padding: 20px;
+        }
+
+        /* Estilos do contêiner principal */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra ao redor do contêiner */
+            transition: all 0.3s ease; /* Transição suave ao interagir */
+        }
+
+        /* Efeito de hover no contêiner */
+        .container:hover {
+            transform: translateY(-5px); /* Move o contêiner ligeiramente para cima */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Sombra mais forte ao passar o cursor */
+        }
+
+        /* Estilização do título */
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #2c3e50;
+            font-size: 2.2rem;
+        }
+
+        /* Margem entre grupos de formulário */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        /* Estilização dos rótulos */
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+
+        /* Estilização dos campos de entrada e textarea */
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        /* Efeito de foco nos campos de entrada */
+        input:focus, textarea:focus {
+            border-color: #3498db; /* Altera a cor da borda ao focar */
+            outline: none;
+        }
+
+        /* Estilização do botão de enviar */
+        button {
+            background-color: #28a745; /* Cor de fundo do botão */
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            width: 100%; /* Largura completa */
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        /* Efeito de hover no botão de enviar */
+        button:hover {
+            background-color: #218838;
+        }
+
+        /* Estilização do botão de voltar */
+        .btn {
+            display: inline-block;
+            margin-top: 15px;
+            background-color: #007bff;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 50px;
+            text-decoration: none;
+            text-align: center;
+            width: 100%;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        /* Efeito de hover no botão de voltar */
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Estilização das mensagens flash */
+        .flashes {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        /* Estilos para cada mensagem flash */
+        .flashes li {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        /* Estilos de mensagem de sucesso */
+        .flashes li.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        /* Estilos de mensagem de erro */
+        .flashes li.danger {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cadastrar Produto</h1> <!-- Título da página -->
+
+        <!-- Exibição de mensagens de flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes">
+                    {% for category, message in messages %}
+                        <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Formulário de cadastro de produto -->
+        <form method="POST">
+            <div class="form-group">
+                <label for="nome">Nome do Produto:</label> <!-- Rótulo do campo Nome -->
+                <input type="text" id="nome" name="nome" placeholder="Nome do produto" required>
+            </div>
+
+            <div class="form-group">
+                <label for="descricao">Descrição do Produto:</label> <!-- Rótulo do campo Descrição -->
+                <textarea id="descricao" name="descricao" placeholder="Descrição do produto" rows="4" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="quantidade">Quantidade:</label> <!-- Rótulo do campo Quantidade -->
+                <input type="number" id="quantidade" name="quantidade" placeholder="Quantidade" required>
+            </div>
+
+            <div class="form-group">
+                <label for="preco">Preço:</label> <!-- Rótulo do campo Preço -->
+                <input type="number" id="preco" name="preco" placeholder="Preço" step="0.01" required>
+            </div>
+
+            <div class="form-group">
+                <label for="quantidade_minima">Quantidade Mínima:</label> <!-- Rótulo do campo Quantidade Mínima -->
+                <input type="number" id="quantidade_minima" name="quantidade_minima" placeholder="Quantidade mínima" required>
+            </div>
+
+            <!-- Botão de envio do formulário -->
+            <button type="submit"><i class="fas fa-save"></i> Cadastrar Produto</button>
+            <!-- Botão para retornar à dashboard -->
+            <a href="{{ url_for('dashboard') }}" class="btn"><i class="fas fa-arrow-left"></i> Voltar à Dashboard</a>
+        </form>
+    </div>
+
+    <!-- Scripts do jQuery e Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
