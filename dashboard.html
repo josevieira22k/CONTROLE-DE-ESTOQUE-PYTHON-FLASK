@@ -1,18 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Definição da linguagem, metadados e estilo da página -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Controle de Estoque</title>
+    
+    <!-- Link para o arquivo CSS customizado armazenado na pasta static -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    
+    <!-- Link para o CSS do Bootstrap para estilização da página -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Link para o Font Awesome para uso de ícones -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    
     <style>
+        /* Estilos de página interna, aplicando cores, fontes e sombras aos cartões e botões */
         body {
             background-color: #f4f6f9;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+
         .dashboard-card {
+            /* Estilo dos cartões no dashboard */
             border-radius: 15px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             padding: 30px;
@@ -20,20 +31,28 @@
             background-color: #fff;
             transition: transform 0.2s ease;
         }
+
         .dashboard-card:hover {
+            /* Animação ao passar o mouse sobre os cartões */
             transform: translateY(-5px);
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
         }
+
         .dashboard-card h3 {
+            /* Estilo para títulos nos cartões */
             font-size: 1.5rem;
             font-weight: 600;
             color: #333;
             margin-bottom: 10px;
         }
+
         .dashboard-card p i {
+            /* Cor do ícone no cartão */
             color: #5dade2;
         }
+
         .btn-custom {
+            /* Estilo personalizado dos botões */
             margin: 10px;
             width: 230px;
             padding: 12px;
@@ -42,52 +61,55 @@
             border: none;
             transition: all 0.3s ease-in-out;
         }
+
         .btn-custom:hover {
+            /* Animação de hover para os botões */
             transform: translateY(-3px);
             background-color: #2980b9;
         }
-        .btn-primary {
-            background-color: #3498db;
-        }
-        .btn-success {
-            background-color: #2ecc71;
-        }
-        .btn-warning {
-            background-color: #f39c12;
-        }
-        .btn-info {
-            background-color: #1abc9c;
-        }
-        .btn-danger {
-            background-color: #e74c3c;
-        }
+
+        /* Cores de botões para diferentes funcionalidades */
+        .btn-primary { background-color: #3498db; }
+        .btn-success { background-color: #2ecc71; }
+        .btn-warning { background-color: #f39c12; }
+        .btn-info { background-color: #1abc9c; }
+        .btn-danger { background-color: #e74c3c; }
+
         .container {
+            /* Limite máximo da largura do container principal */
             max-width: 1100px;
             margin-top: 60px;
         }
+
         h1 {
+            /* Estilo do título principal */
             font-size: 2.8rem;
             font-weight: 700;
             color: #2c3e50;
             margin-bottom: 40px;
         }
-        /* Ajuste nos ícones */
+
+        /* Ajuste no tamanho dos ícones */
         .fas {
             font-size: 2.5rem;
             margin-bottom: 10px;
         }
-        /* Ajuste dos cartões */
+
+        /* Ajuste de espaçamento para os cartões */
         .col-md-6 {
             margin-bottom: 30px;
         }
     </style>
 </head>
 <body>
+    <!-- Container principal que engloba o conteúdo da página -->
     <div class="container text-center">
+        <!-- Título da página -->
         <h1>CONTROLE DE ESTOQUE</h1>
 
-        <!-- Cards de Informações -->
+        <!-- Seção de cartões para exibição de informações -->
         <div class="row">
+            <!-- Cartão para exibir o total de produtos -->
             <div class="col-md-6">
                 <div class="dashboard-card">
                     <h3>Total de Produtos</h3>
@@ -95,6 +117,8 @@
                     <h3>{{ total_produtos }}</h3>
                 </div>
             </div>
+            
+            <!-- Cartão para exibir produtos com baixa quantidade -->
             <div class="col-md-6">
                 <div class="dashboard-card">
                     <h3>Produtos com Baixa Quantidade</h3>
@@ -104,26 +128,36 @@
             </div>
         </div>
 
-        <!-- Botões de Ações -->
+        <!-- Botões de ação para navegação e funcionalidades do sistema -->
         <div class="text-center mt-5">
+            <!-- Botão para cadastrar um novo produto -->
             <a href="{{ url_for('cadastrar_produto') }}" class="btn btn-primary btn-custom">
                 <i class="fas fa-plus"></i> Cadastrar Produto
             </a>
+            
+            <!-- Botão para visualizar o estoque atual -->
             <a href="{{ url_for('visualizar_estoque') }}" class="btn btn-success btn-custom">
                 <i class="fas fa-list"></i> Visualizar Estoque
             </a>
+            
+            <!-- Botão para ver produtos em falta -->
             <a href="{{ url_for('produtos_em_falta') }}" class="btn btn-warning btn-custom">
                 <i class="fas fa-exclamation-circle"></i> Produtos em Falta
             </a>
+            
+            <!-- Botão para cadastrar um novo usuário -->
             <a href="{{ url_for('cadastrar_usuario') }}" class="btn btn-info btn-custom">
                 <i class="fas fa-user-plus"></i> Cadastrar Usuário
             </a>
+            
+            <!-- Botão para fazer logout -->
             <a href="{{ url_for('logout') }}" class="btn btn-danger btn-custom">
                 <i class="fas fa-sign-out-alt"></i> Logout
             </a>
         </div>
     </div>
 
+    <!-- Scripts do Bootstrap para funcionalidades interativas -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
