@@ -1,37 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Configurações iniciais do documento -->
+    <meta charset="UTF-8"> <!-- Define a codificação de caracteres como UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Define a visualização responsiva em dispositivos móveis -->
+    
+    <!-- Título da página -->
     <title>Editar Produto</title>
+    
+    <!-- Link para o arquivo CSS personalizado -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    
+    <!-- Link para o Bootstrap CSS para estilização e layout responsivo -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+    <!-- Container principal para centralizar o conteúdo -->
     <div class="container mt-5">
+        <!-- Título centralizado da página -->
         <h1 class="text-center">Editar Produto</h1>
+        
+        <!-- Formulário para editar o produto, com envio de dados via método POST -->
         <form action="{{ url_for('editar_produto', id=produto[0]) }}" method="POST">
+            <!-- Campo para o nome do produto -->
             <div class="form-group">
                 <label for="nome">Nome</label>
                 <input type="text" class="form-control" name="nome" value="{{ produto[1] }}" required>
             </div>
+            
+            <!-- Campo para a descrição do produto -->
             <div class="form-group">
                 <label for="descricao">Descrição</label>
                 <input type="text" class="form-control" name="descricao" value="{{ produto[2] }}" required>
             </div>
+            
+            <!-- Campo para a quantidade do produto -->
             <div class="form-group">
-                <label for="quantidade">Quantidade</label> <!-- Quantidade vem antes de Preço -->
+                <label for="quantidade">Quantidade</label> <!-- Quantidade do produto -->
                 <input type="number" class="form-control" name="quantidade" value="{{ produto[3] }}" required>
             </div>
+            
+            <!-- Campo para o preço do produto -->
             <div class="form-group">
-                <label for="preco">Preço</label> <!-- Preço é o campo seguinte -->
-                <input type="number" class="form-control" name="preco" value="{{ produto[4] }}" required step="0.01">
+                <label for="preco">Preço</label> <!-- Campo para inserir o preço -->
+                <input type="number" class="form-control" name="preco" value="{{ produto[4] }}" required step="0.01"> <!-- Step "0.01" para valores decimais -->
             </div>
+            
+            <!-- Campo para a quantidade mínima do produto -->
             <div class="form-group">
                 <label for="quantidade_minima">Quantidade Mínima</label>
                 <input type="number" class="form-control" name="quantidade_minima" value="{{ produto[5] }}" required>
             </div>
+            
+            <!-- Botão para enviar o formulário e salvar as alterações -->
             <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+            
+            <!-- Link para voltar à visualização do estoque -->
             <a href="{{ url_for('visualizar_estoque') }}" class="btn btn-secondary">Voltar</a>
         </form>
     </div>
