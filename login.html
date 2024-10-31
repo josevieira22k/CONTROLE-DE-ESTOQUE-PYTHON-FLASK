@@ -4,9 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    
+    <!-- Link para o arquivo CSS externo -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    
+    <!-- Link para o Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    
     <style>
+        /* Estilo do fundo da página e centralização do conteúdo */
         body {
             background-color: #f0f2f5;
             display: flex;
@@ -15,6 +21,8 @@
             height: 100vh;
             margin: 0;
         }
+
+        /* Estilo do contêiner de login */
         .login-container {
             background-color: #ffffff;
             padding: 40px;
@@ -23,6 +31,8 @@
             max-width: 400px;
             width: 100%;
         }
+
+        /* Estilo do título principal */
         h1 {
             color: #007bff;
             font-size: 24px;
@@ -30,6 +40,8 @@
             margin-bottom: 30px;
             text-align: center;
         }
+
+        /* Estilo do subtítulo */
         h2 {
             font-size: 18px;
             color: #343a40;
@@ -37,9 +49,13 @@
             text-align: center;
             margin-bottom: 20px;
         }
+
+        /* Estilo dos campos de entrada */
         .form-control {
             border-radius: 20px;
         }
+
+        /* Estilo do botão de envio */
         .btn-primary {
             background-color: #007bff;
             border-radius: 20px;
@@ -48,12 +64,18 @@
             padding: 10px;
             font-size: 16px;
         }
+
+        /* Efeito de hover para o botão */
         .btn-primary:hover {
             background-color: #0056b3;
         }
+
+        /* Margem entre os grupos de formulário */
         .form-group {
             margin-bottom: 20px;
         }
+
+        /* Estilo do link de recuperação de senha */
         .login-container a {
             display: block;
             text-align: center;
@@ -61,26 +83,41 @@
             color: #007bff;
             text-decoration: none;
         }
+
+        /* Efeito de hover para o link de recuperação de senha */
         .login-container a:hover {
             color: #0056b3;
         }
     </style>
 </head>
 <body>
+    <!-- Contêiner do formulário de login -->
     <div class="login-container">
-        <h2>Estudo de Caso Python</h2> <!-- Cabeçalho com destaque -->
+        <!-- Subtítulo ou nome do projeto -->
+        <h2>Estudo de Caso Python</h2>
+        
+        <!-- Título do formulário -->
         <h1>Login</h1>
+        
+        <!-- Formulário para login -->
         <form action="{{ url_for('auth') }}" method="POST">
+            <!-- Campo para o nome de usuário -->
             <div class="form-group">
                 <label for="username">Nome de Usuário</label>
                 <input type="text" class="form-control" name="username" required>
             </div>
+            
+            <!-- Campo para a senha -->
             <div class="form-group">
                 <label for="senha">Senha</label>
                 <input type="password" class="form-control" name="senha" required>
             </div>
+            
+            <!-- Botão para enviar o formulário -->
             <button type="submit" class="btn btn-primary">Entrar</button>
-            <a href="#">Esqueceu a senha?</a> <!-- Exemplo de link para recuperação de senha -->
+            
+            <!-- Link para recuperação de senha -->
+            <a href="#">Esqueceu a senha?</a>
         </form>
     </div>
 </body>
