@@ -1,24 +1,41 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    <!-- Definições básicas de metadados e configuração de caracteres -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Título da página -->
     <title>Produtos em Falta</title>
+    
+    <!-- Link para o arquivo de estilos CSS externo -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    
+    <!-- Link para o Bootstrap CSS para estilização e responsividade -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    
     <style>
+        /* Estilo do fundo da página */
         body {
             background-color: #f8f9fa;
         }
+
+        /* Margem superior para o container centralizado */
         .container {
             margin-top: 50px;
         }
+
+        /* Cor do título */
         h1 {
             color: #007bff;
         }
+
+        /* Margem superior para a tabela */
         .table {
             margin-top: 20px;
         }
+
+        /* Estilo do botão de retorno */
         .btn-secondary {
             margin-top: 20px;
             background-color: #6c757d;
@@ -26,10 +43,15 @@
     </style>
 </head>
 <body>
+    <!-- Container principal para centralizar o conteúdo -->
     <div class="container">
+        <!-- Título centralizado da página -->
         <h1 class="text-center">Produtos em Falta</h1>
+        
+        <!-- Tabela para exibição dos produtos em falta -->
         <table class="table table-bordered">
             <thead>
+                <!-- Cabeçalho da tabela com os nomes das colunas -->
                 <tr>
                     <th>ID</th>
                     <th>Nome</th>
@@ -39,17 +61,20 @@
                 </tr>
             </thead>
             <tbody>
+                <!-- Laço para iterar sobre os produtos em falta e exibir suas informações -->
                 {% for produto in produtos %}
                     <tr>
-                        <td>{{ produto[0] }}</td>
-                        <td>{{ produto[1] }}</td>
-                        <td>{{ produto[2] }}</td>
-                        <td>{{ produto[3] }}</td>
-                        <td>R$ {{ produto[4] }}</td>
+                        <td>{{ produto[0] }}</td> <!-- Coluna para o ID do produto -->
+                        <td>{{ produto[1] }}</td> <!-- Coluna para o nome do produto -->
+                        <td>{{ produto[2] }}</td> <!-- Coluna para a descrição do produto -->
+                        <td>{{ produto[3] }}</td> <!-- Coluna para a quantidade do produto -->
+                        <td>R$ {{ produto[4] }}</td> <!-- Coluna para o preço do produto, formatado com o símbolo de R$ -->
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
+
+        <!-- Botão para voltar ao dashboard -->
         <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Voltar ao Dashboard</a>
     </div>
 </body>
