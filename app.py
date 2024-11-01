@@ -4,70 +4,73 @@ from flask_mysqldb import MySQL
 
 # Inicialização da aplicação Flask
 app = Flask(__name__)
-app.secret_key = "chave_secreta_estoque"  # Define uma chave secreta para a sessão da aplicação
+app.secret_key = "chave_secreta_estoque"  # Define uma chave secreta para a sessão da aplicação, usada para manter informações do usuário logado
 
-# Configurações do MySQL para conexão com o banco de dados
+# Configurações de conexão com o banco de dados MySQL
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_PASSWORD'] = ''  # Alterar para a senha correta, se houver
 app.config['MYSQL_DB'] = 'estoque'
 
-# Instância do MySQL com as configurações definidas acima
+# Instância do MySQL usando as configurações acima
 mysql = MySQL(app)
 
 # Rota para a página inicial de login
 @app.route('/')
 def login():
-    return render_template('login.html')  # Renderiza o template HTML de login
+    # Renderiza o template de login para autenticação do usuário
+    return render_template('login.html')
 
 # Rota para autenticação de usuário
 @app.route('/auth', methods=['POST'])
 def auth():
-    # Obtém os dados do formulário de login
+    # Obtém os dados enviados no formulário de login
     username = request.form['username']
     senha = request.form['senha']
     
-    # Busca no banco de dados o usuário com as credenciais fornecidas
+    # Realiza consulta no banco de dados para verificar as credenciais
     cursor = mysql.connection.cursor()
     cursor.execute("SELECT * FROM usuarios WHERE username=%s AND senha=%s", (username, senha))
     user = cursor.fetchone()
     
-    # Verifica se o usuário foi encontrado
+    # Caso o usuário seja encontrado, configura a sessão e redireciona para o dashboard
     if user:
-        # Armazena dados na sessão se o login for bem-sucedido
-        session['username'] = user[1]
-        session['perfil'] = user[3]  # Salva o perfil do usuário (admin ou comum) na sessão
+        session['username'] = user[1]  # Guarda o nome de usuário na sessão
+        session['perfil'] = user[3]  # Guarda o perfil do usuário (admin ou comum) na sessão
         flash('Login bem-sucedido!', 'success')  # Exibe mensagem de sucesso
         return redirect(url_for('dashboard'))
     else:
-        flash('Credenciais inválidas!', 'danger')  # Exibe mensagem de erro
+        # Exibe mensagem de erro se as credenciais não forem válidas
+        flash('Credenciais inválidas!', 'danger')
         return redirect(url_for('login'))
 
-# Rota para o dashboard
+# Rota para o painel principal (dashboard)
 @app.route('/dashboard')
 def dashboard():
-    # Verifica se o usuário está logado
+    # Verifica se o usuário está logado na sessão
     if 'username' in session:
         cursor = mysql.connection.cursor()
-        # Obtém o total de produtos no estoque
+        # Conta o número total de produtos no estoque
         cursor.execute("SELECT COUNT(*) FROM produtos")
         total_produtos = cursor.fetchone()[0]
 
-        # Obtém a quantidade de produtos com estoque abaixo do limite
+        # Conta produtos com quantidade abaixo do limite
         cursor.execute("SELECT COUNT(*) FROM produtos WHERE quantidade < 10")
         produtos_baixa_quantidade = cursor.fetchone()[0]
 
-        # Renderiza o template do dashboard com dados do estoque
+        # Renderiza o dashboard com as informações do estoque
         return render_template('dashboard.html', total_produtos=total_produtos, baixa_quantidade=produtos_baixa_quantidade)
     else:
-        return redirect(url_for('login'))  # Redireciona para login se não estiver logado
+        # Redireciona para login se o usuário não estiver logado
+        return redirect(url_for('login'))
 
-# Rota para cadastrar produto
+# Rota para cadastrar um novo produto
 @app.route('/cadastrar_produto', methods=['GET', 'POST'])
 def cadastrar_produto():
+    # Verifica se o usuário está logado
     if 'username' in session:
         if request.method == 'POST':
-            # Obtém dados do formulário de cadastro de produto
+            # Obtém os dados do formulário de cadastro
             nome = request.form.get('nome')
             descricao = request.form.get('descricao')
             quantidade = request.form.get('quantidade')
@@ -84,29 +87,30 @@ def cadastrar_produto():
                 cursor = mysql.connection.cursor()
                 cursor.execute("INSERT INTO produtos (nome, descricao, quantidade, preco, quantidade_minima) VALUES (%s, %s, %s, %s, %s)", 
                                (nome, descricao, int(quantidade), float(preco), int(quantidade_minima)))
-                mysql.connection.commit()
+                mysql.connection.commit()  # Confirma a inserção no banco
                 flash('Produto cadastrado com sucesso!', 'success')
                 return redirect(url_for('dashboard'))
             except MySQLdb.Error as e:
-                # Reverte alterações no banco em caso de erro
+                # Em caso de erro, desfaz a transação
                 mysql.connection.rollback()
                 flash(f'Erro ao cadastrar produto: {str(e)}', 'danger')
                 return redirect(url_for('cadastrar_produto'))
 
+        # Renderiza a página de cadastro de produto para requisições GET
         return render_template('cadastrar_produto.html')
     else:
         return redirect(url_for('login'))
 
-# Rota para visualizar estoque
+# Rota para visualizar todos os produtos no estoque
 @app.route('/visualizar_estoque', methods=['GET'])
 def visualizar_estoque():
     if 'username' not in session:
         return redirect(url_for('login'))
     
-    # Obtém termo de pesquisa do formulário (caso exista)
+    # Obtém o termo de busca (se fornecido pelo usuário)
     search_query = request.args.get('search', '')
     
-    # Realiza a busca no banco de dados pelo nome do produto se houver termo de pesquisa
+    # Busca no banco de dados pelo nome do produto
     if search_query:
         produtos = buscar_produtos_por_nome(search_query)
         if not produtos:
@@ -128,26 +132,26 @@ def obter_produtos():
     cursor.execute("SELECT * FROM produtos")
     return cursor.fetchall()
 
-# Rota para editar produto
+# Rota para editar um produto existente
 @app.route('/editar_produto/<int:id>', methods=['GET', 'POST'])
 def editar_produto(id):
     if 'username' in session:
         cursor = mysql.connection.cursor()
         if request.method == 'POST':
-            # Obtém dados atualizados do formulário
+            # Coleta dados atualizados do formulário
             nome = request.form.get('nome').strip()
             descricao = request.form.get('descricao').strip()
             quantidade = request.form.get('quantidade').strip()
             preco = request.form.get('preco').strip()
             quantidade_minima = request.form.get('quantidade_minima').strip()
 
-            # Valida se todos os campos estão preenchidos
+            # Verifica se todos os campos estão preenchidos
             if not all([nome, descricao, quantidade, preco, quantidade_minima]):
                 flash('Todos os campos devem ser preenchidos!', 'danger')
                 return redirect(url_for('editar_produto', id=id))
 
             try:
-                # Atualiza o produto no banco de dados
+                # Atualiza as informações do produto no banco de dados
                 cursor.execute(
                     "UPDATE produtos SET nome=%s, descricao=%s, quantidade=%s, preco=%s, quantidade_minima=%s WHERE id=%s",
                     (nome, descricao, int(quantidade), float(preco), int(quantidade_minima), id)
@@ -161,7 +165,7 @@ def editar_produto(id):
                 return redirect(url_for('editar_produto', id=id))
 
         cursor.execute("SELECT * FROM produtos WHERE id=%s", (id,))
-        produto = cursor.fetchone()
+        produto = cursor.fetchone()  # Busca o produto para edição
         return render_template('editar_produto.html', produto=produto)
     else:
         return redirect(url_for('login'))
@@ -178,11 +182,12 @@ def excluir_produto(id):
     else:
         return redirect(url_for('login'))
 
-# Rota para cadastrar usuário
+# Rota para cadastrar um novo usuário (apenas admin)
 @app.route('/cadastrar_usuario', methods=['GET', 'POST'])
 def cadastrar_usuario():
     if 'username' in session and session['perfil'] == 'admin':
         if request.method == 'POST':
+            # Obtém dados do formulário de cadastro de usuário
             username = request.form['username']
             senha = request.form['senha']
             perfil = request.form['perfil']
@@ -200,33 +205,30 @@ def cadastrar_usuario():
     else:
         return redirect(url_for('login'))
 
-# Rota para visualizar produtos em falta
+# Rota para visualizar produtos com quantidade baixa
 @app.route('/produtos_em_falta')
 def produtos_em_falta():
     if 'username' not in session:
         return redirect(url_for('login'))
     
-    # Obtém produtos com quantidade abaixo do limite
+    # Busca produtos com quantidade abaixo do mínimo
     produtos = get_produtos_em_falta()
     return render_template('produtos_em_falta.html', produtos=produtos)
 
 # Função auxiliar para buscar produtos com baixa quantidade
 def get_produtos_em_falta():
     cursor = mysql.connection.cursor()
-    cursor.execute("SELECT id, nome, descricao, quantidade, preco FROM produtos WHERE quantidade < quantidade_minima")
-    produtos = cursor.fetchall()
-    cursor.close()
-    return produtos
+    cursor.execute("SELECT id, nome, descricao, quantidade, quantidade_minima FROM produtos WHERE quantidade < quantidade_minima")
+    return cursor.fetchall()
 
 # Rota para logout
 @app.route('/logout')
 def logout():
-    # Remove dados de sessão ao sair
-    session.pop('username', None)
-    session.pop('perfil', None)
-    flash('Você saiu com sucesso!', 'success')
+    # Limpa a sessão do usuário logado
+    session.clear()
+    flash('Logout realizado com sucesso!', 'success')
     return redirect(url_for('login'))
 
-# Executa a aplicação Flask
-if __name__ == "__main__":
+# Execução da aplicação
+if __name__ == '__main__':
     app.run(debug=True)
