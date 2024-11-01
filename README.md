@@ -11,26 +11,7 @@ Cadastrar e autenticar usuários com diferentes permissões (administrador,comum
 Exibir um painel de controle
 Mantém um design consistente usando HTML , CSS (styles.css), e templates Jinja.
 
-2. Estrutura do Projeto
-A estrutura básica de diretórios para o projeto pode ser a seguinte:
-
-projeto_estoque/
-├── app.py                   
-├── app.py                   # Código principal # Código principal do Flask
-├── templates/               
-├── templates/  
-# Diretório para os templates HTML
-│   ├── index.html
-│   ├── login.html
-│   ├── dashboard.html
-│   ├── cadastrar_produto.html
-│   ├── editar_produto.html
-│   └── cadastrar_usuario.html
-├── static/
-│   └── styles.css           # Estilos CSS para os templates
-└── venv/                    # Ambiente virtual Python (opcional)
-
-3. Configuração do Banco de Dados
+2. Configuração do Banco de Dados
 O projeto utiliza SQLAlchemy com MySQL para gerenciar os dados. As tabelas principais incluem:
 
 Usuario: para armazenar as informações dos usuários (ID, nome de usuário, senha e perfil).
@@ -39,7 +20,7 @@ Produto: para manter o registro dos produtos no estoque (ID, nome e quantidade).
 
 A conexão ao banco é configurada no app.py, onde é especificado o URI do banco de dados MySQL.
 
-4. Principais Funcionalidades
+3. Principais Funcionalidades
    
 A. Autenticação de Usuário
 
@@ -60,21 +41,21 @@ D. Gerenciamento de Usuários
 Cadastro de Usuário : Apenas administradores podem cadastrar novos usuários.
 Sair : Remove a sessão ativa do usuário e redireciona para a página inicial.
 
-5. Modelos HTML e CSS
+4. Modelos HTML e CSS
 
 HTML e Jinja : Cada rota importante possui um template HTML específico com o uso de Jinja para
 dashboard.htmlexibe uma lista de produtos com seus respectivos tamanhos.
 login.htmlfornece o formulário de login.
 CSS : O arquivo styles.cssmantém a consistência visual em todo o site, com estilos para os formulários, botões, tabelas, e alertas.
 
-6. Lógica do Flask (app.py)
+5. Lógica do Flask (app.py)
 
 O app.pyé o núcleo da aplicação. Nele, configuramos as rotas para cada funcionalidade mencionada, utilizando o SQLAlchemy para as operações no banco de dados. Cada rota geralmente segue a estrutura de:
 
 GET para exibir o formulário ou a página.
 POST para processar os dados enviados (por exemplo, sem login ou cadastro).
 
-7. Exemplo de Rota com Autenticação e Renderização de Template
+6. Exemplo de Rota com Autenticação e Renderização de Template
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -88,7 +69,7 @@ def login():
         flash('Usuário ou senha incorretos.', 'danger')
     return render_template('login.html')
 
-8. Configuração Inicial e Instalações Necessárias
+7. Configuração Inicial e Instalações Necessárias
 Para configurar o projeto, é necessário:
 
 Criar um ambiente virtual:
@@ -99,13 +80,13 @@ pip install flask flask_sqlalchemy pymysql werkzeug
 
 Configure o banco de dados no MySQL e certifique-se de que o URI não app.config['SQLALCHEMY_DATABASE_URI']esteja correto.
 
-9. Boas Práticas e Testes
+8. Boas Práticas e Testes
    
 Verificação de Sessão : Em rotas que desabilitam autenticação, como dashboarde cadastrar_produto, verificamos se o user_idestá presente
 Mensagens Flash : Utilizei mensagens flash para fornecer feedback ao usuário, como sucesso ou erro nas ações.
 Testes Frequentes : Testar cada funcionalidade isoladamente ajuda a identificar problemas rapidamente.
 
-10. Expansões Futuras
+9. Expansões Futuras
 Este projeto pode ser expandido para incluir:
 
 Relatórios em PDF ou CSV de estoque e atividades.
